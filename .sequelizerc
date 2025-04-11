@@ -1,7 +1,7 @@
 import path from 'path';
 
 export default {
-  config: path.resolve('~/config', 'config.ts'),
+  config: path.resolve('~/config', 'db.ts'),
   models: path.resolve('~/models'),
   seeders: path.resolve('~/seeders'),
   migrations: path.resolve('~/migrations'),
