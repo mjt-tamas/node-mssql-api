@@ -3,14 +3,16 @@ import app from '~/app';
 import { User } from '~/models/User';
 
 describe('POST /users', () => {
-  it('should create a new user', async () => {
+  it.only('should create a new user', async () => {
     const newUser = {
       username: 'John Doe',
       email: 'johndoe@email.com',
       password: 'password123',
     };
-    const response = await request(app).post('/api/users').send(newUser);
-
+    const response = await request(app)
+      .post('/api/users')
+      .send({ data: newUser });
+    console.log('response.body', response.body);
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body).toBeInstanceOf(User);
