@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 
-const path = './.env';
+const path = process.env.NODE_ENV ? `./.env.${process.env.NODE_ENV}` : './.env';
 
 config({
   path,

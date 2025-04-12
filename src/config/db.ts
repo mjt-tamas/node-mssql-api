@@ -20,42 +20,42 @@ const dbConfig: dbEnvironments = {
 
 export { dbConfig };
 
-// const db = {};
+const isTest = config.environment === 'test';
 
-const sequelize = new Sequelize(
-  config.mssql.database,
-  config.mssql.user,
-  config.mssql.password,
-  {
-    host: config.mssql.host,
-    port: Number(config.mssql.port),
-    dialect: 'mssql',
-    dialectOptions: {
-      port: Number(config.mssql.port),
-      database: config.mssql.database,
-      trustServerCertificate: true,
-      options: {
-        encrypt: false,
+const sequelize = isTest
+  ? new Sequelize({
+      dialect: 'sqlite',
+      storage: ':memory:',
+      logging: false,
+    })
+  : new Sequelize(
+      config.mssql.database,
+      config.mssql.user,
+      config.mssql.password,
+      {
+        host: config.mssql.host,
+        port: Number(config.mssql.port),
+        dialect: 'mssql',
+        dialectOptions: {
+          port: Number(config.mssql.port),
+          database: config.mssql.database,
+          trustServerCertificate: true,
+          options: {
+            encrypt: false,
+          },
+        },
+        define: {
+          timestamps: false,
+        },
+        logging: false,
+        pool: {
+          min: 1,
+          max: 100,
+          idle: 36000,
+        },
       },
-    },
-    define: {
-      timestamps: false,
-    },
-    logging: false,
-    pool: {
-      min: 1,
-      max: 100,
-      idle: 36000,
-    },
-  },
-);
+    );
+
 const db = initModels(sequelize);
-const syncDb = async () => {
-  try {
-    await sequelize.sync();
-  } catch (error) {
-    console.error('Error syncing database:', error);
-    process.exit(1);
-  }
-};
-export { sequelize, syncDb, db };
+
+export { sequelize, db };

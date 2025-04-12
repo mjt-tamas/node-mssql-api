@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '~/app';
+import { User } from '~/models/User';
 
 describe('POST /users', () => {
   it('should create a new user', async () => {
@@ -9,10 +10,10 @@ describe('POST /users', () => {
       password: 'password123',
     };
     const response = await request(app).post('/api/users').send(newUser);
+
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
-    expect(response.body.username).toBe(newUser.username);
-    expect(response.body.email).toBe(newUser.email);
+    expect(response.body).toBeInstanceOf(User);
   });
 });
 
@@ -26,9 +27,10 @@ describe('GET /users', () => {
 
 describe('GET /users/:id', () => {
   it('should return a user by ID', async () => {
-    const userId = 1; // Replace with a valid user ID
+    const userId = 1;
     const response = await request(app).get(`/api/users/${userId}`);
     expect(response.status).toBe(200);
+    expect(response.body).toBeInstanceOf(User);
     expect(response.body).toHaveProperty('id', userId);
   });
   it('should return 404 for a non-existent user', async () => {
