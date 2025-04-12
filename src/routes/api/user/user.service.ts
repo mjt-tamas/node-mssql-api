@@ -18,16 +18,17 @@ export class UserService {
   }
   //UPDATE
   public async update(id: number, user: Partial<UserCreationAttributes>) {
-    const updatedUser = await db.User.update(user, {
+    const [affectedRows, updatedUsers] = await db.User.update(user, {
       where: { id },
+      returning: true,
     });
-    return updatedUser;
+    return { affected_rows: affectedRows, user: updatedUsers[0] };
   }
   //DELETE
   public async delete(id: number) {
-    const deletedUser = await db.User.destroy({
+    const deletedUserCount = await db.User.destroy({
       where: { id },
     });
-    return deletedUser;
+    return deletedUserCount;
   }
 }

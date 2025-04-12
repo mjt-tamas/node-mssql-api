@@ -2,6 +2,7 @@ import { BaseController } from '~/common/base.controller';
 import { UserService } from './user.service';
 import { userCreateSchema, userUpdateSchema } from './user.validator';
 import { idSchema } from '~/common/base.validator';
+import { errors } from '~/middleware/exception.middleware';
 
 export class UserController extends BaseController {
   constructor(private userService = new UserService()) {
@@ -19,7 +20,6 @@ export class UserController extends BaseController {
   );
   //READ
   public list = this.handler({}, async (_, res) => {
-    // console.log('req', req);
     const users = await this.userService.list();
     return res.send(users);
   });
@@ -29,6 +29,9 @@ export class UserController extends BaseController {
     },
     async (req, res) => {
       const user = await this.userService.getById(req.params.id);
+      if (!user) {
+        throw errors.notFound('User');
+      }
       return res.send(user);
     },
   );
@@ -39,7 +42,10 @@ export class UserController extends BaseController {
       body: userUpdateSchema,
     },
     async (req, res) => {
-      const user = await this.userService.update(req.params.id, req.body);
+      const { user } = await this.userService.update(req.params.id, req.body);
+      if (!user) {
+        throw errors.notFound('User');
+      }
       return res.send(user);
     },
   );
@@ -49,7 +55,10 @@ export class UserController extends BaseController {
       params: idSchema,
     },
     async (req, res) => {
-      await this.userService.delete(req.params.id);
+      const deletedUserCount = await this.userService.delete(req.params.id);
+      if (!deletedUserCount) {
+        throw errors.notFound('user');
+      }
       return res.status(204).send();
     },
   );

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "NODE-MSSQL API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
