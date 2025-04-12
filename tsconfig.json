@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
+    "target": "es2020",
     "outDir": "dist",
-    "sourceMap": true,
-    "strict": true,
-    "target": "es2017",
-    "skipLibCheck": true,
     "baseUrl": ".",
+    "skipLibCheck": true,
     "paths": {
       "~/*": ["./src/*"]
     },
+    "isolatedModules": true,
+    "strict": true,
+    "sourceMap": true,
     "esModuleInterop": true,
-    "noUnusedParameters": false
+    "noImplicitReturns": true
   },
-  "include": ["./src/**/*"]
+  "include": ["src/**/*", "src/**/*.test.ts"]
 }
