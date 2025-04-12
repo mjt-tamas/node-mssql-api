@@ -1,5 +1,6 @@
 import type { dbEnvironments } from '~/types/db.type';
 import config from '~/config';
+console.log('Config:', config);
 
 const dbConfig: dbEnvironments = {
   development: {
