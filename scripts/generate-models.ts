@@ -1,5 +1,5 @@
 import SequelizeAuto from 'sequelize-auto';
-import dbConfig from '../src/config/db';
+import { dbConfig } from '../src/config/db';
 
 const auto = new SequelizeAuto(
   dbConfig.development.database,
